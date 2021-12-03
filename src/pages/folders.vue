@@ -1,6 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    SETTINGS
+    WATCHED FOLDERS
   </q-page>
 </template>
 
@@ -9,7 +9,7 @@ import { Todo, Meta } from 'components/models';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
-  name: 'PageIndex',
+  name: 'PageFolders',
   components: {  },
   setup() {
     const todos = ref<Todo[]>([

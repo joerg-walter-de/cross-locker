@@ -2,7 +2,7 @@
   "name": "cross-locker",
   "version": "0.0.1",
   "description": "A Vault for git secrets",
-  "productName": "cross-locker",
+  "productName": "Cross Locker",
   "author": "Jörg Walter <joerg-walter@gmx.de>",
   "private": true,
   "scripts": {

@@ -2,6 +2,8 @@ import { app, BrowserWindow, nativeTheme } from 'electron'
 import path from 'path'
 import os from 'os'
 
+//import PackageInfo from 'package.json';
+
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
 
@@ -22,6 +24,8 @@ function createWindow () {
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
     width: 1000,
     height: 600,
+    title: 'Cross Locker',
+    //titleBarStyle: 'hidden',
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
@@ -30,8 +34,10 @@ function createWindow () {
     }
   })
 
-  mainWindow.loadURL(process.env.APP_URL)
+  mainWindow.setMenu(null);
 
+  void mainWindow.loadURL(process.env.APP_URL);
+/*
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
     mainWindow.webContents.openDevTools()
@@ -41,14 +47,14 @@ function createWindow () {
     mainWindow.webContents.on('devtools-opened', () => {
       mainWindow.webContents.closeDevTools()
     })
-  }
+  } */
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
-app.whenReady().then(createWindow)
+void app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {

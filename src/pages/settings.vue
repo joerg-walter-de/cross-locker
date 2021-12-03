@@ -9,7 +9,7 @@ import { Todo, Meta } from 'components/models';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
-  name: 'PageIndex',
+  name: 'PageSettings',
   components: {  },
   setup() {
     const todos = ref<Todo[]>([
