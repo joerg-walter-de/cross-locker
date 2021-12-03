@@ -1,6 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    SECRETS
+    SETTINGS
   </q-page>
 </template>
 

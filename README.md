@@ -1,4 +1,4 @@
-# git-vault (git-vault)
+# cross-locker (cross-locker)
 
 A Vault for git secrets
 

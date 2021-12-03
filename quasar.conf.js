@@ -146,8 +146,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'git-vault',
-        short_name: 'git-vault',
+        name: 'cross-locker',
+        short_name: 'cross-locker',
         description: 'A Vault for git secrets',
         display: 'standalone',
         orientation: 'portrait',
@@ -213,7 +213,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'git-vault'
+        appId: 'cross-locker'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

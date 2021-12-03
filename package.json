@@ -1,8 +1,8 @@
 {
-  "name": "git-vault",
+  "name": "cross-locker",
   "version": "0.0.1",
   "description": "A Vault for git secrets",
-  "productName": "git-vault",
+  "productName": "cross-locker",
   "author": "Jörg Walter <joerg-walter@gmx.de>",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "keytar": "^7.7.0",
     "quasar": "^2.0.0",
     "vue-i18n": "^9.0.0"
   },
