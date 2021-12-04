@@ -1,43 +1,45 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    WATCHED FOLDERS
+  <q-page class="row q-pa-md">
+    <div >
+    <b>
+      WATCHED FOLDERS
+    </b>
+    </div>
+    <q-btn  color="red" @click="onGetPassword()">
+
+    </q-btn>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
+
+/* import {
+  ipcRenderer
+} from 'electron';
+ */
 
 export default defineComponent({
   name: 'PageFolders',
   components: {  },
+
   setup() {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
-      }
-    ]);
-    const meta = ref<Meta>({
-      totalCount: 1200
-    });
-    return { todos, meta };
+
+
+  function onGetPassword(): void {
+
+/*     const password = ipcRenderer.sendSync('get-password', 'xxx') as string;
+
+    console.log(password); */
+
   }
+
+
+    return {
+      onGetPassword
+    };
+  },
+
+
 });
 </script>

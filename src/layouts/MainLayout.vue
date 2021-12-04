@@ -16,12 +16,31 @@
         class="bg-orange-1"
       >
       <q-list>
-
-        <EssentialLink
+        <q-item
           v-for="link in essentialLinks"
           :key="link.title"
-          v-bind="link"
-        />
+          clickable
+          v-ripple
+          :active="this.$route.path === link.link"
+          active-class="bg-teal-1 text-grey-8"
+          :to="link.link"
+          exact
+
+        >
+          <q-item-section
+            v-if="link.icon"
+            avatar
+          >
+            <q-icon :name="link.icon" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>
+              {{ link.title }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-drawer>
 
@@ -32,28 +51,27 @@
 </template>
 
 <script lang="ts">
-import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
     title: 'Secrets',
     icon: 'lock',
-    link: '#/secrets'
+    link: '/secrets'
   },
   {
     title: 'Watched Folders',
     icon: 'folder',
-    link: '#/folders'
+    link: '/folders'
   },
   {
     title: 'Settings',
     icon: 'settings',
-    link: '#/settings'
+    link: '/settings'
   },
   {
     title: 'Legal',
     icon: 'info',
-    link: '#/legal'
+    link: '/legal'
   }
 ];
 
@@ -63,15 +81,16 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
   },
 
   setup () {
-    const leftDrawerOpen = ref(true)
+    const leftDrawerOpen = ref(true);
+    const link = ref('/folders');
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
+      link,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }

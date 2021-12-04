@@ -1,20 +1,79 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, ipcMain } from 'electron'
 import path from 'path'
 import os from 'os'
+//import keytar from 'keytar';
+import fs from 'fs';
+import chokidar from 'chokidar';
 
 //import PackageInfo from 'package.json';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
 
+//--------------------------------------------------------------------------------------------------
+
 try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
-    require('fs').unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
+    fs.unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
   }
 }
 catch (_) { }
 
-let mainWindow
+let mainWindow;
+
+//--------------------------------------------------------------------------------------------------
+
+/* ipcMain.on('get-password', (event, user) => {
+  event.returnValue = keytar.getPassword('ServiceName', user);
+});
+ */
+/* ipcMain.on('set-password', (event, user, pass) => {
+  event.returnValue = keytar.replacePassword('ServiceName', user, pass);
+}); */
+
+//--------------------------------------------------------------------------------------------------
+/*
+function StartWatcher(path){
+
+
+  var watcher = chokidar.watch(path, {
+      ignored: /[\/\\]\./,
+      persistent: true
+  });
+
+  function onWatcherReady(){
+      console.info('From here can you check for real changes, the initial scan has been completed.');
+  }
+
+  // Declare the listeners of the watcher
+  watcher
+  .on('add', function(path) {
+        console.log('File', path, 'has been added');
+  })
+  .on('addDir', function(path) {
+        console.log('Directory', path, 'has been added');
+  })
+  .on('change', function(path) {
+       console.log('File', path, 'has been changed');
+  })
+  .on('unlink', function(path) {
+       console.log('File', path, 'has been removed');
+  })
+  .on('unlinkDir', function(path) {
+       console.log('Directory', path, 'has been removed');
+  })
+  .on('error', function(error) {
+       console.log('Error happened', error);
+  })
+  .on('ready', onWatcherReady)
+  .on('raw', function(event, path, details) {
+       // This event should be triggered everytime something happens.
+       console.log('Raw event info:', event, path, details);
+  });
+}
+ */
+
+//--------------------------------------------------------------------------------------------------
 
 function createWindow () {
   /**
@@ -37,7 +96,7 @@ function createWindow () {
   mainWindow.setMenu(null);
 
   void mainWindow.loadURL(process.env.APP_URL);
-/*
+
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
     mainWindow.webContents.openDevTools()
@@ -45,16 +104,20 @@ function createWindow () {
   else {
     // we're on production; no access to devtools pls
     mainWindow.webContents.on('devtools-opened', () => {
-      mainWindow.webContents.closeDevTools()
+      mainWindow.webContents.closeDevTools();
     })
-  } */
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
+//--------------------------------------------------------------------------------------------------
+
 void app.whenReady().then(createWindow);
+
+//--------------------------------------------------------------------------------------------------
 
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {
@@ -62,8 +125,25 @@ app.on('window-all-closed', () => {
   }
 })
 
+//--------------------------------------------------------------------------------------------------
+
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
+  //  void keytar.getPassword('xxx', 'yyy');
   }
 })
+
+//--------------------------------------------------------------------------------------------------
+
+console.info('Creating file watchers...');
+
+var watcher = chokidar.watch('D:/test', {ignored: /^\./, persistent: true});
+
+watcher
+  .on('add', function(path) {console.log('File', path, 'has been added');})
+  .on('change', function(path) {console.log('File', path, 'has been changed');})
+  .on('unlink', function(path) {console.log('File', path, 'has been removed');})
+  .on('error', function(error) {console.error('Error happened', error);})
+
+//--------------------------------------------------------------------------------------------------
