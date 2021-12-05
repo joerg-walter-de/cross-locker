@@ -15,6 +15,22 @@ import { config } from 'process';
 
 import forge from 'node-forge';
 
+//--------------------------------------------------------------------------------------------------
+
+
+let appConfig = {
+
+};
+
+const homePath = app.getPath('home');
+console.log(`homePath: ${homePath}`);
+const settingsPath = path.join(homePath, '.crosslocker');
+console.log(`settingsPath: ${settingsPath}`);
+storage.setDataPath(settingsPath);
+const dataPath = storage.getDataPath();
+console.log(`dataPath: ${dataPath}`);
+storage.set('config', appConfig);
+
 const demonstrateKeyBasedAsymmetricEncryption = () => {
  try {
    // replace with yout actual String
@@ -32,12 +48,13 @@ const demonstrateKeyBasedAsymmetricEncryption = () => {
    const keypair = forge.pki.rsa.generateKeyPair(options);
 
    console.log('created')
-   const x = forge.pki.publicKeyToPem(keypair.publicKey);
-   const y = forge.pki.privateKeyToPem(keypair.privateKey);
+   const publicKeyPEM = forge.pki.publicKeyToPem(keypair.publicKey);
 
    const encryptedPrivateKeyPEM = forge.pki.encryptRsaPrivateKey(keypair.privateKey, 'abc123');
 
    console.log(encryptedPrivateKeyPEM);
+
+   storage.set('keys', [ { privateKey: encryptedPrivateKeyPEM, publicKey: publicKeyPEM}]);
 
    console.log(exampleString);
 
@@ -54,8 +71,6 @@ const demonstrateKeyBasedAsymmetricEncryption = () => {
     console.log(forge.pki.publicKeyToPem(keypair.publicKey))
   */
 
-    console.log(x)
-    console.log(y)
     console.log('1:')
    console.log(encrypted1);
    console.log('2:')
@@ -96,20 +111,6 @@ catch (_) { }
 
 let mainWindow;
 
-let appConfig = {
-
-};
-
-//--------------------------------------------------------------------------------------------------
-
-const homePath = app.getPath('home');
-console.log(`homePath: ${homePath}`);
-const settingsPath = path.join(homePath, '.crosslocker');
-console.log(`settingsPath: ${settingsPath}`);
-storage.setDataPath(settingsPath);
-const dataPath = storage.getDataPath();
-console.log(`dataPath: ${dataPath}`);
-storage.set('config', appConfig);
 
 demonstrateKeyBasedAsymmetricEncryption();
 

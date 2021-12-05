@@ -7,32 +7,65 @@
     </b>
     </div>
 
-    <q-btn  class="order-1 q-mb-md" color="green" icon="add" @click="onNewKey()">
+    <q-btn  class="col-2" color="green" icon="add" @click="onNewKey()">
       NEW KEY
     </q-btn>
-
     <div
       v-for="(key, keyIndex) in keys"
       :key="key.keyId"
       class="row q-pt-md q-gutter-sm auto"
     >
-      <div class="col-4 floating-label">
-        <label>Key Name</label>
-        <input v-model="key.name">
-      </div>
+      <q-input
+        outlined
 
-      <div class="col-4 floating-label">
-        <label>Key ID</label>
-        <input v-model="key.keyId">
-      </div>
+        class="col-3"
+        v-model="key.name"
+        stack-label
+        label="Name"
+      />
+
+      <q-input
+        outlined
+        class="col-3"
+        v-model="key.keyId"
+        stack-label
+        label="Fingerprint"
+      />
+
+      <q-btn
+        class="col-1"
+        color="blue"
+        icon="visibility"
+        @click="onShowKeyPair(key, keyIndex)"
+      />
 
       <q-btn class="col-1" color="red" icon="delete" @click="onDeleteKey(key, keyIndex)"/>
+
+      <q-input
+        outlined
+        class="col-5"
+        v-model="key.privateKeyPEM"
+        stack-label
+        v-show="visibleKeyPairIndex === keyIndex"
+        type="textarea"
+        label="Private Key (PEM)"
+      />
+
+      <q-input
+        outlined
+        class="col-5"
+        v-model="key.publicKeyPEM"
+        stack-label
+        v-show="visibleKeyPairIndex === keyIndex"
+        type="textarea"
+        label="Public Key (PEM)"
+      />
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Key from '../common/Key';
 
 export default defineComponent({
@@ -41,6 +74,8 @@ export default defineComponent({
 
   },
   setup() {
+
+    const visibleKeyPairIndex = ref(-1);
 
     function onDeleteKey(key: Key, index: number): void {
       console.debug('onDeleteKey');
@@ -52,7 +87,16 @@ export default defineComponent({
       keys.push();
     }
 
-    const keys: Key[] = [
+    function onShowKeyPair(key: Key, index: number): void {
+      console.debug('onShowKeyPair');
+      console.debug(visibleKeyPairIndex);
+      console.debug(index);
+
+      visibleKeyPairIndex.value = index;
+    }
+
+
+    let keys = [
 
       {
         name: 'AAA',
@@ -73,8 +117,10 @@ export default defineComponent({
 
     return {
       keys,
+      visibleKeyPairIndex,
       onDeleteKey,
-      onNewKey
+      onNewKey,
+      onShowKeyPair,
     };
   }
 });
