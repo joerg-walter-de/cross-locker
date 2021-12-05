@@ -1,15 +1,15 @@
 const store = {
     debug: true,
     state: {
-      message: 'Hello!'
+      currentPage: '/'
     },
-    setMessageAction (newValue: string) {
-      if (this.debug) console.log('setMessageAction triggered with', newValue)
-      this.state.message = newValue
+    setCurrentPage (newValue: string) {
+      if (this.debug) console.log('setCurrentPage triggered with', newValue)
+      this.state.currentPage = newValue
     },
-    clearMessageAction () {
-      if (this.debug) console.log('clearMessageAction triggered')
-      this.state.message = ''
+    resetCurrentPage () {
+      if (this.debug) console.log('resetCurrentPage triggered')
+      this.state.currentPage = '/'
     }
   }
 

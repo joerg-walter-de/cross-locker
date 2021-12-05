@@ -4,6 +4,13 @@
     <b>
       LEGAL
     </b>
+    <br>
+    <br>
+    Cross Locker
+    <br>
+    Jörg Walter
+    <br>
+    All Rights Reserved
     </div>
   </q-page>
 </template>

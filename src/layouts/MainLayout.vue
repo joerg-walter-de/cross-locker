@@ -22,7 +22,7 @@
           clickable
           v-ripple
           :active="this.$route.path === link.link"
-          active-class="bg-teal-1 text-grey-8"
+          active-class="bg-orange-3"
           :to="link.link"
           exact
 

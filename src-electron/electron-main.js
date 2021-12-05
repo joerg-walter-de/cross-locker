@@ -1,9 +1,70 @@
-import { app, BrowserWindow, nativeTheme, ipcMain } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  nativeTheme,
+  ipcMain
+} from 'electron'
+
 import path from 'path'
 import os from 'os'
 //import keytar from 'keytar';
 import fs from 'fs';
 import chokidar from 'chokidar';
+import storage from 'electron-json-storage';
+import { config } from 'process';
+
+import forge from 'node-forge';
+
+const demonstrateKeyBasedAsymmetricEncryption = () => {
+ try {
+   // replace with yout actual String
+   const exampleString =
+     'Text that is going to be sent over an insecure channel and must be encrypted at all costs!';
+   // generate Keypair, in asynchronous encryption both keys need to be related
+   // and cannot be independently generated keys
+   // keylength adheres to the 'ECRYPT-CSA Recommendations' on 'www.keylength.com'
+
+   const options= {
+    bits: 3072,
+    e: 0x10001
+   };
+
+   const keypair = forge.pki.rsa.generateKeyPair(options);
+
+
+   console.log(exampleString);
+
+   // ENCRYPT String
+   const encrypted1 = forge.util.encode64(
+     keypair.publicKey.encrypt(exampleString, 'RSA-OAEP')
+   );
+
+   const encrypted2 = forge.util.encode64(
+    keypair.publicKey.encrypt(exampleString, 'RSA-OAEP')
+  );
+    console.log(forge.pki.privateKeyToPem(keypair.privateKey))
+    console.log(forge.pki.publicKeyToPem(keypair.publicKey))
+  console.log('1:')
+   console.log(encrypted1);
+   console.log('2:')
+   console.log(encrypted2);
+
+   // DECRYPT String
+   const decrypted = keypair.privateKey.decrypt(
+     forge.util.decode64(encrypted1),
+     'RSA-OAEP'
+   );
+
+   console.log('3:')
+   console.log(decrypted);
+
+ } catch (error) {
+  console.log(error)
+ }
+};
+
+demonstrateKeyBasedAsymmetricEncryption();
+
 
 //import PackageInfo from 'package.json';
 
@@ -20,6 +81,23 @@ try {
 catch (_) { }
 
 let mainWindow;
+
+let appConfig = {
+
+};
+
+//--------------------------------------------------------------------------------------------------
+
+const homePath = app.getPath('home');
+console.log(`homePath: ${homePath}`);
+const settingsPath = path.join(homePath, '.crosslocker');
+console.log(`settingsPath: ${settingsPath}`);
+storage.setDataPath(settingsPath);
+const dataPath = storage.getDataPath();
+console.log(`dataPath: ${dataPath}`);
+storage.set('config', appConfig);
+
+demonstrateKeyBasedAsymmetricEncryption();
 
 //--------------------------------------------------------------------------------------------------
 
@@ -88,8 +166,10 @@ function createWindow () {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
+      enableRemoteModule: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
-      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
+    //  preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
+      preload: path.resolve(__dirname, 'electron-preload.js'),
     }
   })
 
