@@ -31,6 +31,13 @@ const demonstrateKeyBasedAsymmetricEncryption = () => {
 
    const keypair = forge.pki.rsa.generateKeyPair(options);
 
+   console.log('created')
+   const x = forge.pki.publicKeyToPem(keypair.publicKey);
+   const y = forge.pki.privateKeyToPem(keypair.privateKey);
+
+   const encryptedPrivateKeyPEM = forge.pki.encryptRsaPrivateKey(keypair.privateKey, 'abc123');
+
+   console.log(encryptedPrivateKeyPEM);
 
    console.log(exampleString);
 
@@ -42,15 +49,22 @@ const demonstrateKeyBasedAsymmetricEncryption = () => {
    const encrypted2 = forge.util.encode64(
     keypair.publicKey.encrypt(exampleString, 'RSA-OAEP')
   );
-    console.log(forge.pki.privateKeyToPem(keypair.privateKey))
+
+ /*    console.log(forge.pki.privateKeyToPem(keypair.privateKey))
     console.log(forge.pki.publicKeyToPem(keypair.publicKey))
-  console.log('1:')
+  */
+
+    console.log(x)
+    console.log(y)
+    console.log('1:')
    console.log(encrypted1);
    console.log('2:')
    console.log(encrypted2);
 
+  const loadedDecryptedPrivateKey = forge.pki.decryptRsaPrivateKey(encryptedPrivateKeyPEM, 'abc123');
+
    // DECRYPT String
-   const decrypted = keypair.privateKey.decrypt(
+   const decrypted = loadedDecryptedPrivateKey.decrypt(
      forge.util.decode64(encrypted1),
      'RSA-OAEP'
    );

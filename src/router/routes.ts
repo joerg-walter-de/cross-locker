@@ -13,6 +13,12 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/keys',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('src/pages/keys.vue') }],
+  },
+
+  {
     path: '/folders',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('src/pages/folders.vue') }],

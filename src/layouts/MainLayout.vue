@@ -2,7 +2,7 @@
     <q-layout view="hHh Lpr lff" container style="height: 100vh" class="shadow-2 rounded-borders">
       <q-header elevated class="primary">
         <q-toolbar>
-          <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
+<!--           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" /> -->
           <q-toolbar-title>Cross Locker</q-toolbar-title>
         </q-toolbar>
       </q-header>
@@ -55,13 +55,18 @@
 const linksList = [
   {
     title: 'Secrets',
-    icon: 'lock',
+    icon: 'code',
     link: '/secrets'
   },
   {
     title: 'Watched Folders',
     icon: 'folder',
     link: '/folders'
+  },
+  {
+    title: 'Keys',
+    icon: 'key',
+    link: '/keys'
   },
   {
     title: 'Settings',
