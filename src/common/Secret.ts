@@ -1,11 +1,14 @@
 interface Secret {
 
+
     encryptionKeyId: string;
     encryptionAlgorithm: 'RSA-OAEP';
 
     encryptionTimestamp: Date;
 
-    encryptedPayload: string;
+    encryptedPayload_base64: string;
+
+    relativeSyncTargetPath: string;
 
 }
 

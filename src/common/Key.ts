@@ -9,4 +9,6 @@ interface Key {
 
 }
 
-export default Key;
+export {
+    Key
+};

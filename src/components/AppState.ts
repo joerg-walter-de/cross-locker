@@ -1,7 +1,18 @@
+import {
+    Key
+} from '../common/Key';
+
+import {
+    Secret
+} from '../common/Secret';
+
+
 const store = {
     debug: true,
     state: {
-      currentPage: '/'
+      currentPage: '/',
+      keys: Array<Key>(),
+      secrets: Array<Secret>()
     },
     setCurrentPage (newValue: string) {
       if (this.debug) console.log('setCurrentPage triggered with', newValue)
