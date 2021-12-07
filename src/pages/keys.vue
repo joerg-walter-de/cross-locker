@@ -39,10 +39,19 @@
       <q-input
         outlined
         dense
-        class="col-4"
+        class="col-2"
         v-model="newKey.name"
         stack-label
         label="Name"
+      />
+
+      <q-select
+        outlined
+        class="col-3"
+        v-model="newKey.type"
+        dense
+        :options="['aes', 'rsa']"
+        label="Type"
       />
 
       <q-btn
@@ -75,7 +84,7 @@
       <q-input
         outlined
         dense
-        class="col-4"
+        class="col-3"
         v-model="key.name"
         readonly
         stack-label
@@ -89,7 +98,18 @@
       <q-input
         outlined
         dense
-        class="col-4"
+        class="col-1"
+        v-model="key.type"
+        readonly
+        stack-label
+        label="Type"
+      >
+      </q-input>
+
+      <q-input
+        outlined
+        dense
+        class="col-3"
         v-model="key.keyId"
         readonly
         stack-label
@@ -170,14 +190,14 @@ let allKeys: Key[] = [
     keyId: '1234',
     privateKeyPEM: 'PK1',
     publicKeyPEM: 'PK2',
-    encryptionAlgorithm: 'RSA-OAEP'
+    type: 'rsa'
   },
   {
     name: 'BBB',
     keyId: '5678',
     privateKeyPEM: 'PK1',
     publicKeyPEM: 'PK2',
-    encryptionAlgorithm: 'RSA-OAEP'
+    type: 'rsa'
   }
 
 ];
@@ -222,8 +242,9 @@ function onNewKey(): void
 {
   console.debug('onNewKey');
   newKey.name = '';
-  newKey.encryptionAlgorithm = 'RSA-OAEP';
+  newKey.type = 'rsa';
   isCreating.value = true;
+  visibleKeyPairIndex.value = -1;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -274,7 +295,7 @@ export default defineComponent({
       confirmDeletion,
       keyDeleteIndex,
       onDeleteKeyExecute,
-      newKey,
+      newKey: ref(newKey),
       isCreating,
       $q
     };

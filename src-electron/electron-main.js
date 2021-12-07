@@ -31,6 +31,61 @@ const dataPath = storage.getDataPath();
 console.log(`dataPath: ${dataPath}`);
 storage.set('config', appConfig);
 
+import Store from 'electron-store';
+import Yaml from 'js-yaml';
+
+const schema = {
+  type: {
+    type: 'string',
+    enum: [
+      'crosslocker-keys/v1'
+    ]
+  },
+  keys: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        }
+      }
+    }
+  }
+};
+
+const keysStoreConfig = {
+  schema,
+  cwd: settingsPath,
+  name: 'keys',
+  fileExtension: 'yaml',
+	serialize: Yaml.dump,
+	deserialize: Yaml.load,
+  clearInvalidConfig: true,
+  defaults: {
+    type: 'crosslocker-keys/v1',
+    keys: []
+  }
+};
+
+console.log('Creating store...');
+
+let store = null;
+
+try{
+  store  = new Store(keysStoreConfig);
+}
+catch(error)
+{
+  console.log('Creating store...FAILED');
+  console.error(error)
+
+  // Use dot-notation to access nested properties
+  store.set('type', 'crosslocker-keys/v1');
+}
+
+console.log(store.get('type'));
+
 const demonstrateKeyBasedAsymmetricEncryption = () => {
  try {
    // replace with yout actual String

@@ -2,7 +2,7 @@ interface Key {
 
     name: string;
     keyId: string;
-    encryptionAlgorithm: 'RSA-OAEP';
+    type: 'aes' | 'rsa';
 
     publicKeyPEM: string;
     privateKeyPEM: string;
