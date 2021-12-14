@@ -34,6 +34,12 @@ storage.set('config', appConfig);
 import Store from 'electron-store';
 import Yaml from 'js-yaml';
 
+import Ajv from "ajv";
+
+
+const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
+
+
 const schema = {
   type: {
     type: 'string',
@@ -55,17 +61,11 @@ const schema = {
 };
 
 const keysStoreConfig = {
-  schema,
   cwd: settingsPath,
   name: 'keys',
   fileExtension: 'yaml',
 	serialize: Yaml.dump,
 	deserialize: Yaml.load,
-  clearInvalidConfig: true,
-  defaults: {
-    type: 'crosslocker-keys/v1',
-    keys: []
-  }
 };
 
 console.log('Creating store...');
@@ -81,8 +81,21 @@ catch(error)
   console.error(error)
 
   // Use dot-notation to access nested properties
+  console.log('Setting default...');
   store.set('type', 'crosslocker-keys/v1');
+  console.log('Setting default...OK');
 }
+
+const validate = ajv.compile(schema);
+const valid = validate(store.store);
+if (!valid)
+{
+    store.store = {
+      type: 'crosslocker-keys/v1',
+      keys: []
+    }
+}
+
 
 console.log(store.get('type'));
 

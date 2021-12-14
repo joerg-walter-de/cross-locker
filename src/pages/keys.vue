@@ -19,16 +19,45 @@
 
 
     <div
-      class="row full-width q-gutter-sm "
+      class="row full-width "
     >
       <q-btn
-        class="col-2"
-        color="primary"
+        class="q-mr-sm"
+        style="width:120px"
+        color="black"
+        unelevated
+        rounded
         icon="add"
         label="NEW"
         :disable="isCreating"
         @click="onNewKey()"
       />
+
+      <q-btn
+        class="q-mr-sm"
+        style="width:120px"
+        color="green"
+        dense
+        unelevated
+        rounded
+        v-show="isCreating"
+        icon="save"
+        label="Save"
+        @click="onSaveKey()"
+      />
+
+      <q-btn
+        style="width:120px"
+        color="red"
+        dense
+        label="Discard"
+        rounded
+        unelevated
+        v-show="isCreating"
+        icon="close"
+        @click="isCreating = false"
+      />
+
 
     </div>
 
@@ -54,32 +83,12 @@
         label="Type"
       />
 
-      <q-btn
-        class="col-2 "
-        color="green"
-        dense
-        v-show="isCreating"
-        icon="save"
-        label="Save"
-        @click="onSaveKey()"
-      />
-
-      <q-btn
-        class="col-2 "
-        color="red"
-        dense
-        label="Discard"
-        v-show="isCreating"
-        icon="close"
-        @click="isCreating = false"
-      />
-
     </div>
 
     <div
       v-for="(key, keyIndex) in keys"
       :key="key.keyId"
-      class="row q-mt-sm q-pb-sm q-gutter-sm auto bg-grey-2"
+      class="row q-mt-sm q-pb-sm q-gutter-sm auto"
     >
       <q-input
         outlined
@@ -91,7 +100,12 @@
         label="Name"
       >
         <template v-slot:append>
-          <q-btn dense flat color="grey-5"  icon="content_copy" />
+          <q-btn
+            dense
+            flat
+            color="grey-5"
+            icon="content_copy"
+            @click="copyToClipboard(key.name);   $q.notify({ message: 'Copied' });"/>
         </template>
       </q-input>
 
@@ -116,7 +130,7 @@
         label="Fingerprint"
       >
         <template v-slot:append>
-          <q-btn dense flat color="grey-5" icon="content_copy" />
+          <q-btn dense flat color="grey-5" icon="content_copy" @click="copyToClipboard(key.keyId);  $q.notify({ message: 'Copied' });"/>
         </template>
       </q-input>
 
@@ -150,7 +164,7 @@
         label="Private Key (PEM)"
       >
         <template v-slot:append>
-          <q-btn dense flat color="grey-5" icon="content_copy" />
+          <q-btn dense flat color="grey-5" icon="content_copy" @click="copyToClipboard(key.privateKeyPEM);  $q.notify({ message: 'Copied' });"/>
         </template>
       </q-input>
       <q-input
@@ -164,7 +178,7 @@
         label="Public Key (PEM)"
       >
         <template v-slot:append>
-          <q-btn dense flat color="grey-5" icon="content_copy" />
+          <q-btn dense flat color="grey-5" icon="content_copy" @click="copyToClipboard(key.publicKeyPEM);  $q.notify({ message: 'Copied' });"/>
         </template>
       </q-input>
     </div>
@@ -177,6 +191,8 @@ import { defineComponent, ref } from 'vue';
 import {
   Key
 } from '../common/Key';
+
+import { copyToClipboard } from 'quasar'
 
 import { useQuasar } from 'quasar'
 const $q = useQuasar();
@@ -297,6 +313,7 @@ export default defineComponent({
       onDeleteKeyExecute,
       newKey: ref(newKey),
       isCreating,
+      copyToClipboard,
       $q
     };
 
